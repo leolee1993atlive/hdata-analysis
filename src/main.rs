@@ -1,11 +1,11 @@
 mod app;
 mod auth;
+mod biz;
 mod common;
 mod config;
 mod error;
 mod middleware;
-mod pet;
-mod user;
+mod sys;
 mod util;
 
 use ::config::{Config, File};
@@ -14,11 +14,12 @@ use axum::middleware::from_fn;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 use crate::auth::route::auth_route::auth_route;
+use crate::biz::datasource::route::data_source_route::data_source_route;
+use crate::biz::pet::route::pet_route::pet_route;
+use crate::biz::pet::route::pet_type_route::pet_type_route;
 use crate::config::config::AppConfig;
 use crate::middleware::auth::auth;
-use crate::pet::route::pet_route::pet_route;
-use crate::pet::route::pet_type_route::pet_type_route;
-use crate::user::route::user_route::user_route;
+use crate::sys::user::route::user_route::user_route;
 
 #[tokio::main]
 async fn main() {
@@ -49,6 +50,7 @@ async fn main() {
             .merge(user_route())
             .merge(pet_route())
             .merge(pet_type_route())
+            .merge(data_source_route())
             .route_layer(from_fn(auth))
             .with_state(app_state),
     );

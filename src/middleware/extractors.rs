@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::user::model::user::User;
+use crate::sys::user::model::user::User;
 use crate::util::jwt_util::JwtToken;
 use crate::{app::AppState, error::error::AppError};
 

@@ -7,9 +7,14 @@ use rbatis::RBatis;
 use rbdc_mysql::MysqlDriver;
 
 use crate::{
+    biz::{
+        datasource::service::data_source_service::DataSourceService,
+        pet::service::{
+            pet_service::PetService, pet_type_service::PetTypeService,
+        },
+    },
     config::config::AppConfig,
-    pet::service::{pet_service::PetService, pet_type_service::PetTypeService},
-    user::service::user_service::UserService,
+    sys::user::service::user_service::UserService,
 };
 
 // 定义应用状态结构体，包含数据库连接池
@@ -37,6 +42,7 @@ pub struct ServiceContainer {
     pub user_service: UserService,
     pub pet_service: PetService,
     pub pet_type_service: PetTypeService,
+    pub data_source_service: DataSourceService,
 }
 
 impl ServiceContainer {
@@ -45,6 +51,7 @@ impl ServiceContainer {
             user_service: UserService::new(infra),
             pet_service: PetService::new(infra),
             pet_type_service: PetTypeService::new(infra),
+            data_source_service: DataSourceService::new(infra),
         }
     }
 }

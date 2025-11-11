@@ -5,7 +5,7 @@ host = "localhost"
 [db]
 url = "localhost"
 port = 3306
-db_name = "petclinic"
+db_name = "hdata"
 username = "root"
 password = "Tb454580037"
 
