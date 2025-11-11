@@ -1,0 +1,36 @@
+[package]
+name = "petclinic-rs"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+axum = "0.8.4"
+axum-extra = { version = "0.12.1", features = ["typed-header"] }
+jsonwebtoken = "10.2.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.47", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+redis = { version = "0.32", features = ["r2d2"] }
+rbatis = { version = "4.6", features = ["debug_mode"] }
+r2d2 = "0.8"
+r2d2_mysql = "25.0"
+rbdc = "4.6"
+rbdc-mysql = "4.6"
+mysql = "26.0"
+rbs = "4.6"
+duckdb = { version = "1.4.1", features = [
+    "bundled",
+    "csv",
+    "json",
+    "parquet",
+    "url",
+    "r2d2",
+] }
+thiserror = "2.0"
+config = "0.15"
+chrono = { version = "0.4", features = ["serde"] }
+validator = { version = "0.20", features = ["derive"] }
+bcrypt = "0.17"
