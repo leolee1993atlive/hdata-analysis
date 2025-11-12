@@ -1,13 +1,16 @@
-use crate::app::AppState;
-use crate::auth::model::auth::{AuthBody, AuthPayload};
-use crate::common::vo::response::R;
-use crate::error::error::AuthError;
-use crate::util::jwt_util::JwtToken;
-use axum::Json;
-use axum::extract::State;
+use std::sync::Arc;
+
+use axum::{Json, extract::State};
 use redis::Commands;
 use serde_json::json;
-use std::sync::Arc;
+
+use crate::{
+    app::AppState,
+    auth::model::auth::{AuthBody, AuthPayload},
+    common::vo::response::R,
+    error::error::AuthError,
+    util::jwt_util::JwtToken,
+};
 
 pub async fn login(
     State(state): State<Arc<AppState>>,

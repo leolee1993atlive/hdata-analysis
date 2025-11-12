@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
-use crate::biz::pet::model::pet_type::PetType;
 use rbatis::{RBatis, crud, impl_delete, impl_select, impl_update};
 use rbdc::db::ExecResult;
+
+use crate::biz::pet::model::pet_type::PetType;
 
 #[derive(Clone)]
 pub struct PetTypeRepository {

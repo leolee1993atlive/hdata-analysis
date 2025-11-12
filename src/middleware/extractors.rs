@@ -1,12 +1,15 @@
 use std::sync::Arc;
 
-use crate::sys::user::model::user::User;
-use crate::util::jwt_util::JwtToken;
-use crate::{app::AppState, error::error::AppError};
+use axum::{
+    extract::{FromRef, FromRequestParts},
+    http,
+    http::request::Parts,
+};
 
-use axum::extract::{FromRef, FromRequestParts};
-use axum::http;
-use axum::http::request::Parts;
+use crate::{
+    app::AppState, error::error::AppError, sys::user::model::user::User,
+    util::jwt_util::JwtToken,
+};
 
 // 当前用户提取器
 pub struct CurrentUser(pub User);

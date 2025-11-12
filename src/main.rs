@@ -9,17 +9,19 @@ mod sys;
 mod util;
 
 use ::config::{Config, File};
-use axum::Router;
-use axum::middleware::from_fn;
+use axum::{Router, middleware::from_fn};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-use crate::auth::route::auth_route::auth_route;
-use crate::biz::datasource::route::data_source_route::data_source_route;
-use crate::biz::pet::route::pet_route::pet_route;
-use crate::biz::pet::route::pet_type_route::pet_type_route;
-use crate::config::config::AppConfig;
-use crate::middleware::auth::auth;
-use crate::sys::user::route::user_route::user_route;
+use crate::{
+    auth::route::auth_route::auth_route,
+    biz::{
+        datasource::route::data_source_route::data_source_route,
+        pet::route::{pet_route::pet_route, pet_type_route::pet_type_route},
+    },
+    config::config::AppConfig,
+    middleware::auth::auth,
+    sys::user::route::user_route::user_route,
+};
 
 #[tokio::main]
 async fn main() {

@@ -1,7 +1,10 @@
-use crate::common::vo::response::R;
-use axum::http::StatusCode;
-use axum::response::{IntoResponse, Response};
+use axum::{
+    http::StatusCode,
+    response::{IntoResponse, Response},
+};
 use thiserror::Error;
+
+use crate::common::vo::response::R;
 
 #[derive(Error, Debug)]
 pub enum AuthError {

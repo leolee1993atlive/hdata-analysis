@@ -1,6 +1,7 @@
+use std::sync::Arc;
+
 use rbatis::{RBatis, crud, impl_delete, impl_select, impl_update};
 use rbdc::db::ExecResult;
-use std::sync::Arc;
 
 use crate::biz::datasource::model::data_source::DataSource;
 

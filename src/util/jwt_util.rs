@@ -1,11 +1,12 @@
-use crate::error::error::AppError;
-use crate::error::error::AppError::JwtTokenError;
-use jsonwebtoken::errors::ErrorKind;
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
+
 use jsonwebtoken::{
     Algorithm, DecodingKey, EncodingKey, Header, Validation, decode, encode,
+    errors::ErrorKind,
 };
 use serde::{Deserialize, Serialize};
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+
+use crate::error::error::{AppError, AppError::JwtTokenError};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JwtToken {

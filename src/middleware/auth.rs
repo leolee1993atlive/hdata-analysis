@@ -1,11 +1,11 @@
-use crate::common::vo::response::R;
-use crate::error::error::AppError;
-use crate::util::jwt_util::JwtToken;
-use axum::extract::Request;
-use axum::http::StatusCode;
-use axum::middleware::Next;
-use axum::response::IntoResponse;
-use axum::{http, response};
+use axum::{
+    extract::Request, http, http::StatusCode, middleware::Next, response,
+    response::IntoResponse,
+};
+
+use crate::{
+    common::vo::response::R, error::error::AppError, util::jwt_util::JwtToken,
+};
 
 pub async fn auth(
     mut req: Request,

@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
-use crate::sys::user::model::user::User;
 use rbatis::{RBatis, crud, impl_delete, impl_select, impl_update};
 use rbdc::db::ExecResult;
+
+use crate::sys::user::model::user::User;
 
 #[derive(Clone)]
 pub struct UserRepository {
