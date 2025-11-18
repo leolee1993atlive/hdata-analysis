@@ -17,6 +17,7 @@ use crate::{
     biz::{
         datasource::route::data_source_route::data_source_route,
         pet::route::{pet_route::pet_route, pet_type_route::pet_type_route},
+        transtask::route::trans_task_route::trans_task_route,
     },
     config::config::AppConfig,
     middleware::auth::auth,
@@ -53,6 +54,7 @@ async fn main() {
             .merge(pet_route())
             .merge(pet_type_route())
             .merge(data_source_route())
+            .merge(trans_task_route())
             .route_layer(from_fn(auth))
             .with_state(app_state),
     );

@@ -8,18 +8,18 @@ use validator::Validate;
 
 use crate::{
     app::AppState,
-    biz::datasource::model::data_source::{
-        DataSourceCreateBo, DataSourceDetailVo, DataSourceListVo,
-        DataSourceUpdateBo,
+    biz::transtask::model::trans_task::{
+        TransTaskCreateBo, TransTaskDetailVo, TransTaskListVo,
+        TransTaskUpdateBo,
     },
     common::vo::response::R,
     middleware::extractors::CurrentUser,
 };
 
-pub async fn list_data_source(
+pub async fn list_trans_task(
     State(state): State<Arc<AppState>>,
-) -> R<Vec<DataSourceListVo>> {
-    let result = state.services.data_source_service.list().await;
+) -> R<Vec<TransTaskListVo>> {
+    let result = state.services.trans_task_service.list().await;
 
     if result.is_empty() {
         R::ok_with_data(Vec::new())
@@ -28,26 +28,26 @@ pub async fn list_data_source(
     }
 }
 
-pub async fn get_data_source_by_id(
+pub async fn get_trans_task_by_id(
     State(state): State<Arc<AppState>>,
     Path(id): Path<i64>,
-) -> R<DataSourceDetailVo> {
+) -> R<TransTaskDetailVo> {
     let result = state
         .services
-        .data_source_service
-        .get_data_source_by_id(id)
+        .trans_task_service
+        .get_trans_task_by_id(id)
         .await;
 
     match result {
-        Some(data_source) => R::ok_with_data(data_source),
+        Some(trans_task) => R::ok_with_data(trans_task),
         None => R::error_with_message(String::from("查询失败")),
     }
 }
 
-pub async fn create_data_source(
+pub async fn create_trans_task(
     State(state): State<Arc<AppState>>,
     CurrentUser(current_user): CurrentUser,
-    Json(bo): Json<DataSourceCreateBo>,
+    Json(bo): Json<TransTaskCreateBo>,
 ) -> R<()> {
     if let Err(e) = &bo.validate() {
         return R::error_with_message(e.to_string());
@@ -55,7 +55,7 @@ pub async fn create_data_source(
 
     let result = state
         .services
-        .data_source_service
+        .trans_task_service
         .insert_by_bo(bo, &current_user)
         .await;
 
@@ -66,10 +66,10 @@ pub async fn create_data_source(
     }
 }
 
-pub async fn update_data_source(
+pub async fn update_trans_task(
     State(state): State<Arc<AppState>>,
     CurrentUser(current_user): CurrentUser,
-    Json(bo): Json<DataSourceUpdateBo>,
+    Json(bo): Json<TransTaskUpdateBo>,
 ) -> R<()> {
     if let Err(e) = &bo.validate() {
         return R::error_with_message(e.to_string());
@@ -77,7 +77,7 @@ pub async fn update_data_source(
 
     let result = state
         .services
-        .data_source_service
+        .trans_task_service
         .update_by_bo(bo, &current_user)
         .await;
 
@@ -88,14 +88,14 @@ pub async fn update_data_source(
     }
 }
 
-pub async fn delete_data_source(
+pub async fn delete_trans_task(
     State(state): State<Arc<AppState>>,
     CurrentUser(current_user): CurrentUser,
     Path(id): Path<i64>,
 ) -> R<()> {
     let result = state
         .services
-        .data_source_service
+        .trans_task_service
         .delete_by_id(id, &current_user)
         .await;
 
@@ -106,13 +106,13 @@ pub async fn delete_data_source(
     }
 }
 
-pub async fn true_delete_data_source(
+pub async fn true_delete_trans_task(
     State(state): State<Arc<AppState>>,
     Path(id): Path<i64>,
 ) -> R<()> {
     let result = state
         .services
-        .data_source_service
+        .trans_task_service
         .true_delete_by_id(id)
         .await;
 
@@ -120,22 +120,5 @@ pub async fn true_delete_data_source(
         R::ok()
     } else {
         R::error_with_message(String::from("删除失败"))
-    }
-}
-
-pub async fn test_data_source(
-    State(state): State<Arc<AppState>>,
-    Path(id): Path<i64>,
-) -> R<bool> {
-    let (result, message) = state
-        .services
-        .data_source_service
-        .test_data_source(id)
-        .await;
-
-    if result {
-        R::ok_with_data_and_message(result, message)
-    } else {
-        R::error_with_message(message)
     }
 }

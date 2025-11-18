@@ -10,6 +10,7 @@ use crate::{
         pet::service::{
             pet_service::PetService, pet_type_service::PetTypeService,
         },
+        transtask::service::trans_task_service::TransTaskService,
     },
     config::config::AppConfig,
     sys::user::service::user_service::UserService,
@@ -39,6 +40,7 @@ pub struct ServiceContainer {
     pub pet_service: PetService,
     pub pet_type_service: PetTypeService,
     pub data_source_service: DataSourceService,
+    pub trans_task_service: TransTaskService,
 }
 
 impl ServiceContainer {
@@ -48,6 +50,7 @@ impl ServiceContainer {
             pet_service: PetService::new(infra),
             pet_type_service: PetTypeService::new(infra),
             data_source_service: DataSourceService::new(infra),
+            trans_task_service: TransTaskService::new(infra),
         }
     }
 }
