@@ -28,7 +28,10 @@ duckdb = { version = "1.4.1", features = [
     "r2d2"
 ] }
 thiserror = "2.0"
-config = "0.15"
+config = "0.15.19"
 chrono = { version = "0.4", features = ["serde"] }
 validator = { version = "0.20", features = ["derive"] }
 bcrypt = "0.17"
+aes-gcm = "0.10"
+base64 = "0.22"
+rand = "0.9"

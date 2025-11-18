@@ -9,7 +9,8 @@ use validator::Validate;
 use crate::{
     app::AppState,
     biz::datasource::model::data_source::{
-        DataSource, DataSourceCreateBo, DataSourceListVo, DataSourceUpdateBo,
+        DataSource, DataSourceCreateBo, DataSourceDetailVo, DataSourceListVo,
+        DataSourceUpdateBo,
     },
     common::vo::response::R,
     middleware::extractors::CurrentUser,
@@ -30,7 +31,7 @@ pub async fn list_data_source(
 pub async fn get_data_source_by_id(
     State(state): State<Arc<AppState>>,
     Path(id): Path<i64>,
-) -> R<DataSource> {
+) -> R<DataSourceDetailVo> {
     let result = state
         .services
         .data_source_service
@@ -119,5 +120,22 @@ pub async fn true_delete_data_source(
         R::ok()
     } else {
         R::error_with_message(String::from("删除失败"))
+    }
+}
+
+pub async fn test_data_source(
+    State(state): State<Arc<AppState>>,
+    Path(id): Path<i64>,
+) -> R<bool> {
+    let (result, message) = state
+        .services
+        .data_source_service
+        .test_data_source(id)
+        .await;
+
+    if result {
+        R::ok_with_data_and_message(result, message)
+    } else {
+        R::error_with_message(message)
     }
 }

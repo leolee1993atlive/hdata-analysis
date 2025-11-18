@@ -1,8 +1,6 @@
 use std::sync::Arc;
 
-use duckdb::DuckdbConnectionManager;
 use r2d2::Pool;
-use r2d2_mysql::{MySqlConnectionManager, mysql::OptsBuilder};
 use rbatis::RBatis;
 use rbdc_mysql::MysqlDriver;
 
@@ -33,8 +31,6 @@ pub struct Infrastructure {
 #[derive(Clone)]
 pub struct ConnectionPool {
     pub redis_pool: Pool<redis::Client>,
-    pub rb_pool: Pool<MySqlConnectionManager>,
-    pub duck_pool: Pool<DuckdbConnectionManager>,
 }
 
 #[derive(Clone)]
@@ -92,60 +88,11 @@ pub async fn init_app(config: &AppConfig) -> Arc<AppState> {
         }
     }
 
-    // 创建MySQL连接选项用于r2d2连接池
-    let opts = OptsBuilder::new()
-        .ip_or_hostname(Some(config.db.url.clone()))
-        .tcp_port(config.db.port as u16)
-        .user(Some(config.db.username.clone()))
-        .pass(Some(config.db.password.clone()))
-        .db_name(Some(config.db.db_name.clone()));
-
-    // 创建连接管理器
-    let rb_manager = MySqlConnectionManager::new(opts);
-    // 创建r2d2连接池
-    let rb_pool = match Pool::new(rb_manager) {
-        Ok(pool) => {
-            tracing::info!(
-                "Successfully created r2d2 database connection pool for: {}",
-                config.db.db_name
-            );
-            pool
-        }
-        Err(e) => {
-            tracing::error!(
-                "Failed to create r2d2 database connection pool: {}",
-                e
-            );
-            panic!("r2d2 database connection pool creation failed: {}", e);
-        }
-    };
-
-    let duckdb_path = format!("{}_duck.duckdb", config.db.db_name);
-    let duck_manager = match DuckdbConnectionManager::file(duckdb_path) {
-        Ok(manager) => manager,
-        Err(e) => {
-            tracing::error!(
-                "Failed to create duckdb connection manager: {}",
-                e
-            );
-            panic!("duckdb connection manager creation failed: {}", e);
-        }
-    };
-    let duck_pool = match Pool::builder().max_size(10).build(duck_manager) {
-        Ok(pool) => pool,
-        Err(e) => {
-            tracing::error!("Failed to create duckdb connection pool: {}", e);
-            panic!("duckdb connection pool creation failed: {}", e);
-        }
-    };
-
     // 创建共享应用状态，包含RBatis和r2d2连接池
     let infra = Infrastructure {
         batis: Arc::new(rb.clone()),
         pool: Arc::new(ConnectionPool {
             redis_pool: redis_pool,
-            rb_pool: rb_pool,
-            duck_pool: duck_pool,
         }),
     };
     let services = ServiceContainer::new(&infra);
